@@ -47,9 +47,10 @@ class MyWindow(QtWidgets.QMainWindow, form_class):
         self.textBrowser_segmentArchive.setText(segment_archive)
         
     def function_execute(self):
-        segmentName = ag.readCSV(segment_id_list[0])
-        segment_id = ag.idToList(segmentName)
-
+        # 231024 input 방식 변경 (DB > CSV)
+        segmentName = [item.split(',')[0] for item in ag.readCSV(segment_id_list[0])]
+        segment_id = [item.split(',')[1] for item in ag.readCSV(segment_id_list[0])]
+        
         for i in range(len(segment_id)):
             ag.getSegmentDefinition(segment_id[i], current_segment, segment_archive)
             print("'{segment}' is saved".format(segment = segmentName[i]))

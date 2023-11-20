@@ -2,6 +2,7 @@
 # Inquiry : sunkyeong.lee@concentrix.com / sunkyong9768@gmail.com
 
 import aanalytics2 as api2
+import aanalyticsactauth as auth
 import json
 from copy import deepcopy
 from itertools import *
@@ -14,8 +15,8 @@ import time
 
 
 def dataInitiator():
-    api2.configure()
-    logger = api2.Login() 
+    api2.importConfigFile(os.path.join(auth.auth, 'aanalyticsact_auth.json'))
+    logger = api2.Login()
     logger.connector.config
 
 
@@ -38,23 +39,23 @@ def readCSV(csvFile):
     return listCsv
 
 
+#231024 DB검색 > csv 인풋으로 seg id 바로 받는 방식으로 변경
 #segment 이름이 있는 csv > segment id return
-def idToList(segmentId):
-    db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    db_connection = create_engine(db_connection_str, encoding='utf-8')
-    conn = db_connection.connect()
+# def idToList(segmentId):
+#     db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
+#     db_connection = create_engine(db_connection_str, encoding='utf-8')
+#     conn = db_connection.connect()
 
-    query = """
-    SELECT id FROM segment.tb_segment_list
-    where name in ("{0}")
-    """.format(listToStr(segmentId))
+#     query = """
+#     SELECT id FROM segment.tb_segment_list
+#     where name in ("{0}")
+#     """.format(listToStr(segmentId))
     
-    result = pd.read_sql_query(query, conn)
-    result_to_list = result['id'].values.tolist()
-    conn.close()
+#     result = pd.read_sql_query(query, conn)
+#     result_to_list = result['id'].values.tolist()
+#     conn.close()
     
-    return result_to_list
-
+#     return result_to_list
 
 def listToStr(segList):
     return '", "'.join(segList)
@@ -85,5 +86,3 @@ def getSegmentDefinition(seg_id, current_seg, segment_archive):
 #         createCSV(current_seg, segment_id_list[i], seg_def)
 #         createCSV(segment_archive, segment_id_list[i] + '-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()), seg_def)
 #         print("'{segment}' is saved.".format(segment = segmentName[i]))
-
-
