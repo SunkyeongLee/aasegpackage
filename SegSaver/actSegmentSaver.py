@@ -56,7 +56,7 @@ class MyWindow(QtWidgets.QMainWindow, form_class):
             print("'{segment}' is saved".format(segment = segmentName[i]))
             # self.textBrowse_log.append("'{segment}' is saved".format(segment = segmentName[i]))
         
-        print('**All segment definitions have been saved***')
+        print('**All segment definitions are successfully saved***')
         # self.textBrowse_log.append('**All segment definitions have been saved***')
         
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>606</height>
+    <width>393</width>
+    <height>816</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>20</y>
+      <x>120</x>
+      <y>10</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -38,69 +38,20 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>70</y>
+      <y>60</y>
       <width>141</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>1. Segment to Update</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_component">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>110</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enter</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_component">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>100</y>
-      <width>281</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>150</y>
-      <width>41</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력 : </string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="lineEdit_component_out">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>140</y>
-      <width>351</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
+     <string>1. Changed Segment</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>190</y>
+      <y>390</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -112,9 +63,9 @@
    <widget class="QTextEdit" name="textEdit_current">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>240</y>
-      <width>281</width>
+      <x>40</x>
+      <y>440</y>
+      <width>311</width>
       <height>81</height>
      </rect>
     </property>
@@ -122,8 +73,8 @@
    <widget class="QPushButton" name="pushButton_current">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>210</y>
+      <x>40</x>
+      <y>410</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -132,38 +83,12 @@
      <string>Folder Upload</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>240</y>
-      <width>41</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력 : </string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>400</y>
-      <width>41</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력 : </string>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="textEdit_archive">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>400</y>
-      <width>281</width>
+      <x>40</x>
+      <y>600</y>
+      <width>311</width>
       <height>81</height>
      </rect>
     </property>
@@ -171,8 +96,8 @@
    <widget class="QPushButton" name="pushButton_archive">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>370</y>
+      <x>40</x>
+      <y>570</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -185,7 +110,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>350</y>
+      <y>550</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -197,21 +122,21 @@
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>530</y>
+      <x>310</x>
+      <y>740</y>
       <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>GMC 닷컴팀</string>
+     <string>GMO 분석팀</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_complete">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>500</y>
+      <x>150</x>
+      <y>700</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -220,13 +145,121 @@
      <string>Complete</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>90</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Before</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_before">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>80</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Json Upload</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_before">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_after">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>190</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>170</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>After</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_after">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>160</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Json Upload</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>250</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2. Segments to Change</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_csv">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>300</y>
+      <width>311</width>
+      <height>81</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_csv">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>270</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CSV Upload</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>448</width>
+     <width>393</width>
      <height>21</height>
     </rect>
    </property>

@@ -3,6 +3,7 @@
 
 
 from copy import deepcopy
+import aanalyticsactauth as auth
 import pdb
 import aanalytics2 as api2
 import json
@@ -15,8 +16,8 @@ from ast import literal_eval
 
 
 def dataInitiator():
-    api2.configure()
-    logger = api2.Login() 
+    api2.importConfigFile(os.path.join(auth.auth, 'aanalyticsact_auth.json'))
+    logger = api2.Login()
     logger.connector.config
 
 def getSegmentInfo(segmentId):
@@ -125,7 +126,7 @@ def segmentUpdate(component_seg, current_segment, segment_archive):
 
     return seg_contains, checkerList
 
-# Fianl Function
+# Final Function
 # UI에서 사용하지 않음
 def updateSeg(component_seg, current_segment, segment_archive):
 
@@ -170,9 +171,13 @@ def fileFinder(component_segment, segment_folder, ifNew):
         oldSeg = segment_folder + "\\" + right_before_seg_arc
         return oldSeg
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     component_seg = "[API Test] MX S22 Ultra Total Visit"
 #     current_segment = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/current_segment"
 #     segment_archive = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/segment_archive"
 
 #     updateSeg(component_seg, current_segment, segment_archive)
+
+    segmentId = 's200001591_65681798dd642f3236ea7ff8'
+    jsonFile = 'aasegpackage\\SegUpdate\\test.json'
+    print(updateSegment(segmentId, readJson(jsonFile)))

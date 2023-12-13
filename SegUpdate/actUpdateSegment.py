@@ -24,15 +24,28 @@ class MyWindow(QtWidgets.QMainWindow, form_class):
 
     def initUI(self):
         self.setWindowTitle("Segment Update")
-        self.pushButton_component.clicked.connect(self.component_segment)
+        self.pushButton_before.clicked.connect(self.before_segment_upload)
+        self.pushButton_after.clicked.connect(self.after_segment_upload)
+        self.pushButton_csv.clicked.connect(self.csv_list_upload)
+        
         self.pushButton_current.clicked.connect(self.current_segment_open)
         self.pushButton_archive.clicked.connect(self.segment_archive_open)
         self.pushButton_complete.clicked.connect(self.function_execute)
 
-    def component_segment(self):
-        global component_seg
-        component_seg = self.lineEdit_component.text()
-        self.lineEdit_component_out.setText(component_seg)
+    def before_segment_upload(self):
+        global before_segment
+        before_segment = QtWidgets.QFileDialog.getOpenFileName(self, 'Open Json')
+        self.textEdit_before.setText(before_segment[0])
+
+    def after_segment_upload(self):
+        global after_segment
+        after_segment = QtWidgets.QFileDialog.getOpenFileName(self, 'Open Json')
+        self.textEdit_after.setText(after_segment[0])
+
+    def csv_list_upload(self):
+        global csv_list
+        csv_list = QtWidgets.QFileDialog.getOpenFileName(self, 'Open CSV')
+        self.textEdit_csv.setText(csv_list[0])
 
     def current_segment_open(self):
         global current_segment

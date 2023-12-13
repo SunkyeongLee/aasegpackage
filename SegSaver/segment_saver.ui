@@ -159,13 +159,13 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>530</y>
+      <y>540</y>
       <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>GMC 닷컴팀</string>
+     <string>GMO 분석팀</string>
     </property>
    </widget>
   </widget>
