@@ -2,20 +2,23 @@
 # Inquiry : sunkyeong.lee@concentrix.com / sunkyong9768@gmail.com
 
 import aanalytics2 as api2
-import aanalyticsactauth as auth
 import json
 from copy import deepcopy
 from itertools import *
-import csv
+import sys
 import os
 from ast import literal_eval
-from sqlalchemy import create_engine
 import pandas as pd
 import time
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def dataInitiator():
-    api2.importConfigFile(os.path.join(auth.auth, 'aanalyticsact_auth.json'))
+    api2.importConfigFile(resource_path("aanalyticsact_auth.json"))
     logger = api2.Login()
     logger.connector.config
 
@@ -71,18 +74,3 @@ def getSegmentDefinition(seg_id, current_seg, segment_archive):
     seg_def = getSegmentInfo(seg_id)
     createCSV(current_seg, seg_id, seg_def)
     createCSV(segment_archive, seg_id + '-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()), seg_def)
-
-
-# if __name__ == '__main__':
-#     seg_id = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/세그먼트 ID/seg_list.csv"
-#     current_seg = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/current_segment"
-#     segment_archive = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/segment_archive"
-    
-#     segmentName = readCSV(seg_id)
-#     segment_id_list = idToList(segmentName)
-
-#     for i in range(len(segment_id_list)):
-#         seg_def = getSegmentInfo(segment_id_list[i])
-#         createCSV(current_seg, segment_id_list[i], seg_def)
-#         createCSV(segment_archive, segment_id_list[i] + '-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()), seg_def)
-#         print("'{segment}' is saved.".format(segment = segmentName[i]))

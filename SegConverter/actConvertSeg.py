@@ -2,20 +2,22 @@
 # Inquiry : sunkyeong.lee@concentrix.com / sunkyong9768@gmail.com
 
 import aanalytics2 as api2
-import aanalyticsactauth as auth
 import json
 from copy import deepcopy
 from itertools import *
-import csv
+import sys
 import os
 from ast import literal_eval
-from sqlalchemy import create_engine
 import pandas as pd
 import time
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 def dataInitiator():
-    api2.importConfigFile(os.path.join(auth.auth, 'aanalyticsact_auth.json'))
+    api2.importConfigFile(resource_path("aanalyticsact_auth.json"))
     logger = api2.Login()
     logger.connector.config
 
@@ -192,14 +194,3 @@ def segmentConverter(current_segment, segment_archive, as_is, to_be, owner_id, s
     csvSaver(current_segment, segment_archive, output, segment)
 
     return output
-
-# if __name__ == "__main__":
-#     current_segment = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/current_segment"
-#     segment_archive = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/segment_archive"
-    
-#     segment_name = "Group : HHP - test"
-#     as_is = "prop"
-#     to_be = "entry"
-#     owner_id = "200121276"
-
-#     segmentConverter(current_segment, segment_archive, as_is, to_be, owner_id, segment_name)

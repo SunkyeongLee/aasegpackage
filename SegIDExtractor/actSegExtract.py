@@ -2,7 +2,7 @@ from fileinput import filename
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, uic
-import actLibrarySeg as al
+import segExtract as se
 import sys
 import os
 
@@ -12,7 +12,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 # form_class = uic.loadUiType("SegmentLibrary\segment_library.ui")[0]
-form = resource_path("segment_library.ui")
+form = resource_path("segment_id_extractor.ui")
 form_class = uic.loadUiType(form)[0]
 
 class MyWindow(QtWidgets.QMainWindow, form_class):
@@ -22,25 +22,27 @@ class MyWindow(QtWidgets.QMainWindow, form_class):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("Segment Library")
-        self.textLine_owner_enter.clicked.connect(self.getOwnerId)
-        self.segmentArchive.clicked.connect(self.segment_archive_open)
+        self.setWindowTitle("Segment ID Extractor")
+
+        self.csvimport.clicked.connect(self.keyword_list_open)
+        self.folderselect.clicked.connect(self.where_to_save_open)
         self.complete.clicked.connect(self.function_execute)
 
-    def getOwnerId(self):
-        global owner_id
-        owner_id = self.textLine_owner.text()
-        self.textLine_owner_out.setText(owner_id)
+    def keyword_list_open(self):
+        global keyword_list
+        keyword_list = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File')
+        self.csvimport_text.setText(keyword_list[0])
 
-    def segment_archive_open(self):
-        global old_segment
-        old_segment = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File')
-        self.textBrowser_segList.setText(old_segment[0])
+    def where_to_save_open(self):
+        global where_to_save
+        where_to_save = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Directory')
+        self.folderselect_text.setText(where_to_save)
 
     def function_execute(self):
-        seg = al.createSegment(al.pullFromLib(owner_id, old_segment[0]))
-        print(seg)
-        print('***Segment created successfully***')
+        keyword = [item.split(',')[0] for item in se.readCSV(keyword_list[0])]
+
+        print(se.segIdExtractor(keyword, where_to_save))
+        print('***Segment ID List created successfully***')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

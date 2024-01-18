@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>809</height>
+    <width>401</width>
+    <height>822</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,20 +57,20 @@
      </rect>
     </property>
     <property name="text">
-     <string>확인</string>
+     <string>complete</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>730</y>
+      <x>320</x>
+      <y>740</y>
       <width>71</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>GMO 분석팀</string>
+     <string>GMO 운영팀</string>
     </property>
    </widget>
    <widget class="QLabel" name="segmentPrefix_print">
@@ -84,19 +84,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>210</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -115,9 +102,9 @@
    <widget class="QTextBrowser" name="textBrowser_currentSeg">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>40</x>
       <y>490</y>
-      <width>271</width>
+      <width>311</width>
       <height>61</height>
      </rect>
     </property>
@@ -135,25 +122,12 @@
      <string>Folder Upload</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>490</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력:</string>
-    </property>
-   </widget>
    <widget class="QTextBrowser" name="textBrowser_segArc">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>40</x>
       <y>630</y>
-      <width>271</width>
+      <width>311</width>
       <height>61</height>
      </rect>
     </property>
@@ -169,19 +143,6 @@
     </property>
     <property name="text">
      <string>6. Segment Archive</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_15">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>630</y>
-      <width>31</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>입력:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_segArc">
@@ -241,20 +202,20 @@
      <rect>
       <x>40</x>
       <y>130</y>
-      <width>31</width>
+      <width>41</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>입력:</string>
+     <string>Enter: </string>
     </property>
    </widget>
    <widget class="QLineEdit" name="textLine_owner">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>40</x>
       <y>90</y>
-      <width>221</width>
+      <width>251</width>
       <height>31</height>
      </rect>
     </property>
@@ -262,8 +223,8 @@
    <widget class="QGroupBox" name="as_is_box">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>290</y>
+      <x>50</x>
+      <y>280</y>
       <width>120</width>
       <height>141</height>
      </rect>
@@ -305,7 +266,7 @@
       <rect>
        <x>30</x>
        <y>80</y>
-       <width>90</width>
+       <width>91</width>
        <height>16</height>
       </rect>
      </property>
@@ -330,8 +291,8 @@
    <widget class="QGroupBox" name="to_be_box">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>290</y>
+      <x>210</x>
+      <y>280</y>
       <width>120</width>
       <height>141</height>
      </rect>
@@ -408,11 +369,24 @@
    <widget class="QTextBrowser" name="textBrowser_seglist">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>40</x>
       <y>210</y>
-      <width>271</width>
-      <height>61</height>
+      <width>311</width>
+      <height>51</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>760</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>sunkyeong.lee@concentrix.com</string>
     </property>
    </widget>
    <zorder>as_is_box</zorder>
@@ -422,14 +396,11 @@
    <zorder>complete</zorder>
    <zorder>label_5</zorder>
    <zorder>segmentPrefix_print</zorder>
-   <zorder>label_10</zorder>
    <zorder>label_11</zorder>
    <zorder>textBrowser_currentSeg</zorder>
    <zorder>pushButton_currentSeg</zorder>
-   <zorder>label_13</zorder>
    <zorder>textBrowser_segArc</zorder>
    <zorder>label_14</zorder>
-   <zorder>label_15</zorder>
    <zorder>pushButton_segArc</zorder>
    <zorder>label_16</zorder>
    <zorder>textLine_owner_enter</zorder>
@@ -438,13 +409,14 @@
    <zorder>pushButton_seglist</zorder>
    <zorder>textBrowser_seglist</zorder>
    <zorder>textLine_owner</zorder>
+   <zorder>label_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>411</width>
+     <width>401</width>
      <height>21</height>
     </rect>
    </property>

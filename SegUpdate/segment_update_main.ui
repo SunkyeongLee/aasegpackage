@@ -7,33 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>393</width>
-    <height>816</height>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>10</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Segment Update</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
@@ -44,27 +24,27 @@
      </rect>
     </property>
     <property name="text">
-     <string>1. Changed Segment</string>
+     <string>1. Segment Changed</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>390</y>
+      <y>420</y>
       <width>121</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>2. Current Segment</string>
+     <string>3. Current Segment</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit_current">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>440</y>
+      <y>470</y>
       <width>311</width>
       <height>81</height>
      </rect>
@@ -74,7 +54,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>410</y>
+      <y>440</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -87,7 +67,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>600</y>
+      <y>630</y>
       <width>311</width>
       <height>81</height>
      </rect>
@@ -97,7 +77,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>570</y>
+      <y>600</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -110,33 +90,33 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>550</y>
+      <y>580</y>
       <width>121</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>3. Segment Archive</string>
+     <string>4. Segment Archive</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>740</y>
+      <y>770</y>
       <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>GMO 분석팀</string>
+     <string>GMO 운영팀</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_complete">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>700</y>
+      <y>730</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -207,7 +187,7 @@
    <widget class="QPushButton" name="pushButton_after">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>80</x>
       <y>160</y>
       <width>91</width>
       <height>23</height>
@@ -251,6 +231,56 @@
     </property>
     <property name="text">
      <string>CSV Upload</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>400</y>
+      <width>371</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>790</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>sunkyeong.lee@concentrix.com</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>20</y>
+      <width>381</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>굴림</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Segment Update</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

@@ -6,32 +6,43 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>474</height>
+    <width>361</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <widget class="QTextBrowser" name="csvimport_text">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>301</width>
+      <height>81</height>
+     </rect>
+    </property>
+   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>391</width>
+      <width>361</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>굴림</family>
       <pointsize>12</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>Segment Library</string>
+     <string>Segment ID Extractor</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -41,46 +52,46 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>200</y>
+      <y>90</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1. Keyword List</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="csvimport">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>110</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CSV Import</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>240</y>
       <width>111</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>2. Segment to Pull</string>
+     <string>2. Where to Save</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="segmentArchive">
+   <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>220</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>File Upload</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="complete">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>350</y>
-      <width>75</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>complete</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>390</y>
+      <x>280</x>
+      <y>440</y>
       <width>71</width>
       <height>20</height>
      </rect>
@@ -89,89 +100,53 @@
      <string>GMO 운영팀</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser_segList">
+   <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>250</y>
-      <width>311</width>
-      <height>71</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_16">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>90</y>
-      <width>91</width>
-      <height>16</height>
+      <x>170</x>
+      <y>460</y>
+      <width>191</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>1. Owner ID</string>
+     <string>sunkyeong.lee@concentrix.com</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="textLine_owner_enter">
+   <widget class="QPushButton" name="folderselect">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>120</y>
+      <x>30</x>
+      <y>260</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Folder Select</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="folderselect_text">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>290</y>
+      <width>301</width>
+      <height>81</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="complete">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>400</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Enter</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textLine_owner_out">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>150</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_17">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>150</y>
-      <width>41</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enter: </string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textLine_owner">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>110</y>
-      <width>261</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>410</y>
-      <width>191</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>sunkyeong.lee@concentrix.com</string>
+     <string>complete</string>
     </property>
    </widget>
   </widget>
@@ -180,7 +155,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>398</width>
+     <width>361</width>
      <height>21</height>
     </rect>
    </property>

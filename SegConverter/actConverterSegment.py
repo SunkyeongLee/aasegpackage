@@ -16,7 +16,6 @@ def resource_path(relative_path):
 
 form = resource_path("segment_converter.ui")
 form_class = uic.loadUiType(form)[0]
-# form_class = uic.loadUiType("..\SegmentCreate\segment_create_main.ui")[0]
 
 class MyWindow(QtWidgets.QMainWindow, form_class):
     def __init__(self):

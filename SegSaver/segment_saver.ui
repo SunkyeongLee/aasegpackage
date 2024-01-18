@@ -44,7 +44,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1. 세그먼트 리스트</string>
+     <string>1. Segment List</string>
     </property>
    </widget>
    <widget class="QPushButton" name="segmentList_upload">
@@ -158,14 +158,27 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>540</y>
+      <x>300</x>
+      <y>520</y>
       <width>71</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>GMO 분석팀</string>
+     <string>GMO 운영팀</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>540</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>sunkyeong.lee@concentrix.com</string>
     </property>
    </widget>
   </widget>

@@ -1,24 +1,26 @@
 # Created by Sunkyeong Lee
 # Inquiry : sunkyeong.lee@concentrix.com / sunkyong9768@gmail.com
 
-
 from copy import deepcopy
-import aanalyticsactauth as auth
-import pdb
+import sys
 import aanalytics2 as api2
 import json
 from itertools import *
-from sqlalchemy import create_engine
-import pandas as pd
 import time
 import os
 from ast import literal_eval
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def dataInitiator():
-    api2.importConfigFile(os.path.join(auth.auth, 'aanalyticsact_auth.json'))
+    api2.importConfigFile(resource_path("aanalyticsact_auth.json"))
     logger = api2.Login()
     logger.connector.config
+
 
 def getSegmentInfo(segmentId):
     dataInitiator()
@@ -36,9 +38,7 @@ def updateSegment(segmentID, jsonFile):
     ags = api2.Analytics(cid)
     ags.header
 
-    createSeg = ags.updateSegment(segmentID, jsonFile)
-    
-    return createSeg
+    return ags.updateSegment(segmentID, jsonFile)
 
 def readJson(jsonFile):
     with open(jsonFile, 'r', encoding='UTF8') as bla:
@@ -46,6 +46,13 @@ def readJson(jsonFile):
 
     return jsonFile
 
+def readCSV(csvFile):
+    lines = open(csvFile).readlines()
+    listCsv = []
+    for line in lines[1:]:
+        listCsv.append(line.split('\n')[0])
+
+    return listCsv
 
 def dumpJson(seg_location, seg_id, target):
     string = seg_location + '\\' + str(seg_id) + '-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()) + '.json'
@@ -53,35 +60,19 @@ def dumpJson(seg_location, seg_id, target):
         json.dump(target, fileName, indent="\t")
 
 
-def idToList(segmentId):
-    db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    db_connection = create_engine(db_connection_str, encoding='utf-8')
-    conn = db_connection.connect()
+def replace_segment(old_seg, new_seg, base_seg):
+    if old_seg in base_seg:
+        return base_seg.replace(old_seg, new_seg), True
+    return base_seg, False
 
-    query = """
-    SELECT id FROM segment.tb_segment_list as seg
-    left join segment.tb_segment_contains as cont
-    on seg.name = cont.segment_name
-    where segment_contains like '%%{0}%%'
-    """.format(segmentId)
-    
-    result = pd.read_sql_query(query, conn)
-    result_to_list = result['id'].values.tolist()
-    conn.close()
-
-    return result_to_list
 
 # return 변경한 세그먼트 id 리스트로 반환
-def segmentUpdate(component_seg, current_segment, segment_archive):
-    # component segment의 이름을 seg_list 테이블에서 검색하여 id를 반환
-    component_seg_str = ''.join(idToList_segList(component_seg))    
-    # 반환된 id를 seg_contains의 테이블에서 조회하여 해당 세그먼트가 포함된 세그 id 반환
-    seg_contains = idToList(component_seg_str)
-
+def segmentUpdate(before, after, seg_contains, current_segment, segment_archive):
     checkerList = []
+
     for i in range(len(seg_contains)):
         # 변경할 세그먼트의 old 버전 archive에 현재 날짜 붙여서 저장
-        
+    
         # 1. 파일 읽기
         seg_loc = current_segment + "\\" + seg_contains[i] + '.json'
         base_segment = readJson(seg_loc)
@@ -90,8 +81,8 @@ def segmentUpdate(component_seg, current_segment, segment_archive):
         # 세그먼트 긁어 모으기
         if 'stream' in str(base_segment):
             base_seg = str(base_segment['definition']['container']['pred']['stream'])
-            old_seg_json = str(readJson(fileFinder(component_seg_str, segment_archive, False))['definition']['container']['pred'])
-            new_seg_json = str(readJson(fileFinder(component_seg_str, current_segment, True))['definition']['container']['pred'])
+            old_seg_json = str(readJson(before)['definition']['container']['pred'])
+            new_seg_json = str(readJson(after)['definition']['container']['pred'])
 
             # 변환 필요한 세그먼트가 base 세그먼트에 있는지 확인
             if old_seg_json in base_seg:
@@ -104,8 +95,8 @@ def segmentUpdate(component_seg, current_segment, segment_archive):
         
         else :
             base_seg = str(base_segment['definition']['container']['pred'])
-            old_seg_json = str(readJson(fileFinder(component_seg_str, segment_archive, False))['definition']['container']['pred'])
-            new_seg_json = str(readJson(fileFinder(component_seg_str, current_segment, True))['definition']['container']['pred'])
+            old_seg_json = str(readJson(before)['definition']['container']['pred'])
+            new_seg_json = str(readJson(after)['definition']['container']['pred'])
 
             if old_seg_json in base_seg:
                 checkerList.append(True)
@@ -125,59 +116,3 @@ def segmentUpdate(component_seg, current_segment, segment_archive):
         dumpJson(segment_archive, seg_contains[i], segment_copy)
 
     return seg_contains, checkerList
-
-# Final Function
-# UI에서 사용하지 않음
-def updateSeg(component_seg, current_segment, segment_archive):
-
-    seg_list = segmentUpdate(component_seg, current_segment, segment_archive)
-
-    for i in range(len(seg_list)):
-        seg_loc = current_segment + "\\" + seg_list[i] + '.json'
-
-        print(updateSegment(seg_list[i], readJson(seg_loc)))
-
-def idToList_segList(segmentId):
-    db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    db_connection = create_engine(db_connection_str, encoding='utf-8')
-    conn = db_connection.connect()
-
-    query = """
-    SELECT id FROM segment.tb_segment_list
-    where name = "{0}"
-    """.format(segmentId)
-    
-    result = pd.read_sql_query(query, conn)
-    result_to_list = result['id'].values.tolist()
-    conn.close()
-    
-    return result_to_list
-
-def fileFinder(component_segment, segment_folder, ifNew):
-    if ifNew == True:
-        newSeg = segment_folder + "\\" + component_segment + '.json'
-        return newSeg
-    
-    else:
-        segment_id_list = os.listdir(segment_folder)
-        seg_cleaned = []
-        for word in segment_id_list:
-            if str(component_segment) in word:
-                seg_cleaned.append(word)
-        
-        seg_cleaned.sort(reverse=True)
-        right_before_seg_arc = seg_cleaned[1]
-
-        oldSeg = segment_folder + "\\" + right_before_seg_arc
-        return oldSeg
-
-if __name__ == "__main__":
-#     component_seg = "[API Test] MX S22 Ultra Total Visit"
-#     current_segment = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/current_segment"
-#     segment_archive = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/segment_archive"
-
-#     updateSeg(component_seg, current_segment, segment_archive)
-
-    segmentId = 's200001591_65681798dd642f3236ea7ff8'
-    jsonFile = 'aasegpackage\\SegUpdate\\test.json'
-    print(updateSegment(segmentId, readJson(jsonFile)))

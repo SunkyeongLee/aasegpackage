@@ -5,16 +5,20 @@ import aanalytics2 as api2
 import json
 from copy import deepcopy
 from itertools import *
-import csv
 import os
+import sys
 from ast import literal_eval
-from sqlalchemy import create_engine
 import pandas as pd
 import time
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def dataInitiator():
-    api2.configure()
-    logger = api2.Login() 
+    api2.importConfigFile(resource_path("aanalyticsact_auth.json"))
+    logger = api2.Login()
     logger.connector.config
 
 
@@ -108,7 +112,7 @@ def getAllCases_original(dataset):
 
 
 # List로 out
-def setSegment(dataset, ifKey, head):
+def setSegment_old(dataset, ifKey, head):
     segmentList = []
     for i in range(len(dataset)):
         if ifKey == True:
@@ -120,18 +124,27 @@ def setSegment(dataset, ifKey, head):
 
     return segmentList
 
-def stackTodb(dataFrame, dbTableName):
-    print(dataFrame)
-    db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    db_connection = create_engine(db_connection_str, encoding='utf-8')
-    conn = db_connection.connect()
+def setSegment(dataset, ifKey, head, prop_what):
+    segmentList = []
+    for i in range(len(dataset)):
+        if ifKey == True:
+            name = head + " " + ' > '.join(dataset[i])
+            segmentList.append(name)
+        else:
+            if prop_what == "none":
+                value = ','.join(dataset[i])
+                segmentList.append(value)
+            elif prop_what == "prop_thenhit":
+                value = ',{"count": 1, "limit": "within", "container": "hits", "func": "container-restriction"},'.join(dataset[i])
+                segmentList.append(value)
+            else:
+                value = ',{"count": 1, "limit": "within", "attribute": {"func": "attr", "name": "variables/page"}, "func": "dimension-restriction"},'.join(dataset[i])
+                segmentList.append(value)                
 
-    dataFrame.to_sql(name=dbTableName, con=db_connection, if_exists='append', index=False)
-    print("finished")
+    return segmentList
 
 # input대로 중첩 리스트 만들기
 def createIndex(seg_index):
-    # seg_index = "segmentApi\gmc_input_segment\cnx_seg_index.csv"
     index = readCSV(seg_index)
 
     lst = []
@@ -163,12 +176,9 @@ def getAllCases(base_seg, input_index):
 
 
 ### NEW
-def getSegment(seg_list_csv, segment_archive, current_segment, input_index, head, ownerId):
+def getSegment(seg_component, seg_id, property, segment_archive, current_segment, input_index, head, ownerId):
 
-    seg_list = splitSegList(seg_list_csv)[1]
-    
-    seg_def_json = getJsonListCsv(current_segment, idToList(seg_list))
-    seg_component = splitSegList(seg_list_csv)[0]
+    seg_def_json = getJsonListCsv(current_segment, seg_id)
     
     # getFileName
     jsonDict = getjsonDict(seg_component, seg_def_json)
@@ -189,30 +199,45 @@ def getSegment(seg_list_csv, segment_archive, current_segment, input_index, head
         jsonSegValue.append(value)
 
     # 경우의 수로 만들기
-    segmentName = setSegment(getAllCases(jsonKey, input_index), True, head)
-    segmentValue = setSegment(getAllCases(jsonValue, input_index), False, head)
+    segmentName = setSegment(getAllCases(jsonKey, input_index), True, head, "none")
+    if property == "prop_thenhit" or property == "prop_thenpv" :
+        segmentValue = setSegment(getAllCases(jsonValue, input_index), False, head, property)
+    else:
+        segmentValue = setSegment(getAllCases(jsonValue, input_index), False, head, "none")
 
     # Segment
-    segmentIdList = { 'segment_name': setSegment(getAllCases(jsonSegKey, input_index), True, head),
-                    'segment_contains' : setSegment(getAllCases(jsonSegValue, input_index), False, head)}
-
-    stackTodb(pd.DataFrame(segmentIdList), 'tb_segment_contains')
+    segmentIdList = { 'segment_name': setSegment(getAllCases(jsonSegKey, input_index), True, head, "none"),
+                    'segment_contains' : setSegment(getAllCases(jsonSegValue, input_index), False, head, "none")}
+    
+    seg_source = pd.DataFrame(segmentIdList)
+    seg_source.to_csv(segment_archive + '\seg_contains-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()) + '.csv', index=False)
 
     # template
-    targetFile = ownerIdChange(ownerId)
-    # targetFile = readJson('SegmentCreate/userflow_template.json')
-    target = deepcopy(targetFile)  
+    
+    if property == "prop_or":
+        targetFile = ownerIdChange_orand(ownerId, prop_what="or")
+        target = deepcopy(targetFile)
+
+    elif property == "prop_and":
+        targetFile = ownerIdChange_orand(ownerId, prop_what="and")
+        target = deepcopy(targetFile)
+
+    elif property == "prop_then" or property == "prop_thenpv" or property == "prop_thenhit":
+        targetFile = ownerIdChange_then(ownerId)
+        target = deepcopy(targetFile)
     
     # 변경 후 호출
     segmentInfo = []
     for i in range(len(segmentName)):
         target['name'] = segmentName[i]
-        target['definition']['container']['pred']['stream'] = list(literal_eval(segmentValue[i]))
+        if property == "prop_or" or property == "prop_and":
+            target['definition']['container']['pred']['preds'] = list(literal_eval(segmentValue[i]))
+        else:
+            target['definition']['container']['pred']['stream'] = list(literal_eval(segmentValue[i]))
 
         callSegment = createSegment(target)
         print(callSegment)
         
-        # string = 'C:\\Users\Administrator\OneDrive - Concentrix Corporation\Documents\★Segment\segment_list\\' + str(callSegment["id"]) + '.json'
         current_seg_def = current_segment + '\\' + str(callSegment["id"]) + '.json'
         seg_arc_def = segment_archive + '\\' + str(callSegment["id"]) + '-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()) + '.json'
         jsonMaker(current_seg_def, target)
@@ -220,9 +245,8 @@ def getSegment(seg_list_csv, segment_archive, current_segment, input_index, head
 
         segmentInfo.append(callSegment)
 
-
     segmentList = pd.DataFrame(segmentInfo).drop(["description", "owner", "isPostShardId", "rsid"], axis=1)
-    stackTodb(segmentList, 'tb_segment_list')
+    segmentList.to_csv(segment_archive + '\seg_creator-' + time.strftime('%Y%m%d-%H%M%S', time.localtime()) + '.csv', index=False)
 
 
 def jsonMaker(seg_def, target):
@@ -239,25 +263,6 @@ def createSegList(segListCsv):
     
     return doubleSegList
 
-def idToList(segmentId):
-    db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    db_connection = create_engine(db_connection_str, encoding='utf-8')
-    conn = db_connection.connect()
-
-    result_list = []
-    for i in range(len(segmentId)):
-        query = """
-        SELECT id FROM segment.tb_segment_list
-        where name = "{0}"
-        """.format(segmentId[i])
-    
-        result = pd.read_sql_query(query, conn)
-        result_to_list = ''.join(result['id'].values.tolist())
-        result_list.append(result_to_list)
-
-    conn.close()
-    
-    return result_list
 
 def listToStr(segList):
     return '", "'.join(segList)
@@ -272,11 +277,11 @@ def splitSegList(seg_list_csv):
 
     return component, segName
 
-def ownerIdChange(ownerId):
+def ownerIdChange_then(ownerId):
     template = """
     {
     "name": "[Test] Home > PFS",
-    "description": "Created by API",
+    "description": "",
     "rsid": "sssamsung4mstglobal",
     "reportSuiteName": "P6 WEB - MST Global",
     "owner": {
@@ -362,34 +367,94 @@ def ownerIdChange(ownerId):
 
     return targetFile 
 
-# if __name__ == "__main__":
-#     seg_list_csv = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/세그먼트 생성/세그먼트 리스트.csv"
-#     current_segment = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/current_segment"
-#     segmen_archive = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/segment List/segment_archive"
-#     input_index = "C://Users/sunky/OneDrive - Concentrix Corporation/Desktop/업무/Save/02-2022/세그먼트 업데이트 자동화/세그먼트 생성/세그먼트 순서.csv"
-#     header = "[API Test] S20 FE"
-#     ownerID = 200121276
 
-#     getSegment(seg_list_csv, segmen_archive, current_segment, input_index, header, ownerID)
+def ownerIdChange_orand(ownerId, prop_what):
+    template = """
+    {
+    "name": "[Test] Home > PFS",
+    "description": "",
+    "rsid": "sssamsung4mstglobal",
+    "reportSuiteName": "P6 WEB - MST Global",
+    "owner": {
+      "id": 200150002,
+      "name": "string",
+      "login": "string"
+    },
+    "definition": {
+        "func":"segment",
+        "version":[ 1, 0, 0 ],
+        "container": {
+            "func": "container",
+            "context": "hits",
+            "pred": {
+                "func": "or",
+                "preds": [
+                    {
+                        "func":"container",
+                        "context":"hits",
+                        "pred": {
+                            "func": "streq",
+                            "str": "home",
+                            "val": {
+                                "func":"attr", "name":"variables/prop6"
+                            }
+                        }
+                    },
+                    {
+                        "func":"container",
+                        "context":"hits",
+                        "pred": {
+                            "func": "streq",
+                            "str": "product family showcase",
+                            "val": {
+                                "func":"attr", "name":"variables/prop6"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "compatibility": {
+      "valid": true,
+      "message": "string",
+      "validator_version": "string",
+      "supported_products": [
+        "string"
+      ],
+      "supported_schema": [
+        "string"
+      ],
+      "supported_features": [
+        "string"
+      ]
+    },
+    "definitionLastModified": "2021-08-22T06:19:00.458Z",
+    "categories": [
+      "string"
+    ],
+    "siteTitle": "string",
+    "tags": [
+      {
+        "id": 0,
+        "name": "string",
+        "description": "string",
+        "components": [
+          {
+            "componentType": "string",
+            "componentId": "string",
+            "tags": [
+              "Unknown Type: Tag"
+            ]
+          }
+        ]
+      }
+    ],
+    "modified": "2021-08-22T06:19:00.458Z",
+    "created": "2021-08-22T06:19:00.458Z"
+  }"""
+    targetFile = json.loads(template)
+    targetFile["owner"]["id"] = ownerId
+    targetFile["definition"]["container"]["pred"]["func"] = prop_what
 
-#     # seg_list = splitSegList(seg_list_csv)[1]
-
-
-    # db_connection_str = 'mysql+pymysql://root:12345@127.0.0.1:3307/segment'
-    # db_connection = create_engine(db_connection_str, encoding='utf-8')
-    # conn = db_connection.connect()
-    
-    # result_list = []
-    # for i in range(len(seg_list)):
-    #     query = """
-    #     SELECT id FROM segment.tb_segment_list
-    #     where name = "{0}"
-    #     """.format(seg_list[i])
-    
-    #     result = pd.read_sql_query(query, conn)
-    #     result_to_list = ''.join(result['id'].values.tolist())
-    #     result_list.append(result_to_list)
-    
-    # conn.close()
-    # print(result_list)
-    # # print(idToList(seg_list))
+    return targetFile 

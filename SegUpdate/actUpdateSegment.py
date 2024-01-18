@@ -5,7 +5,6 @@ from PyQt5 import QtWidgets, uic
 import actUpdateSeg as au
 import sys
 import os
-import pymysql
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -14,7 +13,6 @@ def resource_path(relative_path):
 
 form = resource_path("segment_update_main.ui")
 form_class = uic.loadUiType(form)[0]
-
 
 class MyWindow(QtWidgets.QMainWindow, form_class):
     def __init__(self):
@@ -58,25 +56,21 @@ class MyWindow(QtWidgets.QMainWindow, form_class):
         self.textEdit_archive.setText(segment_archive)
         
     def function_execute(self):
-        # self.textBrowser_log.append('Program Start\n')
-        result = au.segmentUpdate(component_seg, current_segment, segment_archive)
+        segment_id = [item.split(',')[1] for item in au.readCSV(csv_list[0])]
+
+        result = au.segmentUpdate(before_segment[0], after_segment[0], segment_id, current_segment, segment_archive)
         seg_list = result[0]
         checker_list = result[1]
         
         for i in range(len(seg_list)):
             seg_loc = current_segment + "\\" + seg_list[i] + '.json'
             if checker_list[i] == True:
-                print('Updated Successfully')
-                # self.textBrowser_log.append('Updated Successfully')
+                update_log = au.updateSegment(seg_list[i], au.readJson(seg_loc))
+                print(update_log)
             else:
-                print('Nothing has been detected to change')
-                # self.textBrowser_log.append('Nothing has been detected to change')
-            update_log = au.updateSegment(seg_list[i], au.readJson(seg_loc))
-            print(update_log)
-            # self.textBrowser_log.append('Updated : {0}\n'.format(update_log['name']))
+                print('Nothing to change')
         
-        print('**All segment definitions have been saved***')
-        # self.textBrowser_log.append('**All segment definitions have been saved***')        
+        print('**All segment definitions saved***')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
